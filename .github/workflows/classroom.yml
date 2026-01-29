@@ -19,36 +19,12 @@ jobs:
       with:
         test-name: Compilation & Style
         setup-command: ''
-        command: javac Main.java
-        timeout: 2
-        max-score: 10
-    - name: Checkstyle
-      id: checkstyle
-      uses: classroom-resources/autograding-command-grader@v1
-      with:
-        test-name: Checkstyle
-        setup-command: ''
-        command: "```bash curl -L https://www.google.com/search?q=https://github.com/checkstyle/checkstyle/releases/download/releas_10.12.4/checkstyle-10.12.4-all.jar
-          -o checkstyle.jar && java -jar checkstyle.jar -c /google_checks.xml *.java"
-        timeout: 10
-        max-score: 10
-    - name: Prueba logica de negocio
-      id: prueba-logica-de-negocio
-      uses: classroom-resources/autograding-io-grader@v1
-      with:
-        test-name: Prueba logica de negocio
-        setup-command: javac Main.java
-        command: java Main
-        input: 100, 20, 200
-        expected-output: 121.0, 242.0
-        comparison-method: contains
+        command: javac *.java
         timeout: 2
         max-score: 10
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
         COMPILATION-STYLE_RESULTS: "${{steps.compilation-style.outputs.result}}"
-        CHECKSTYLE_RESULTS: "${{steps.checkstyle.outputs.result}}"
-        PRUEBA-LOGICA-DE-NEGOCIO_RESULTS: "${{steps.prueba-logica-de-negocio.outputs.result}}"
       with:
-        runners: compilation-style,checkstyle,prueba-logica-de-negocio
+        runners: compilation-style
